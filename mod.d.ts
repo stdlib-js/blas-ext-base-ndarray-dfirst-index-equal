@@ -1,4 +1,4 @@
-/**
+/*
 * @license Apache-2.0
 *
 * Copyright (c) 2026 The Stdlib Authors.
@@ -16,20 +16,11 @@
 * limitations under the License.
 */
 
-'use strict';
+// TypeScript Version: 4.1
 
-// MODULES //
+/// <reference types="https://cdn.jsdelivr.net/gh/stdlib-js/types@main/index.d.ts"/>
 
-var ndarraylike2scalar = require( '@stdlib/ndarray-base-ndarraylike2scalar' );
-var numelDimension = require( '@stdlib/ndarray-base-numel-dimension' );
-var getStride = require( '@stdlib/ndarray-base-stride' );
-var getOffset = require( '@stdlib/ndarray-base-offset' );
-var getData = require( '@stdlib/ndarray-base-data-buffer' );
-var clipIndex = require( '@stdlib/ndarray-base-clip-index' );
-var strided = require( '@stdlib/blas-ext-base-dfirst-index-equal' ).ndarray;
-
-
-// MAIN //
+import { float64ndarray, typedndarray } from '@stdlib/types/ndarray';
 
 /**
 * Returns the index of the first element in a one-dimensional double-precision floating-point ndarray equal to a corresponding element in another one-dimensional double-precision floating-point ndarray.
@@ -44,8 +35,8 @@ var strided = require( '@stdlib/blas-ext-base-dfirst-index-equal' ).ndarray;
 *
 * -   When comparing elements, the function checks for equality using the strict equality operator `===`. As a consequence, `NaN` values are considered distinct, and `-0` and `+0` are considered the same.
 *
-* @param {ArrayLikeObject<Object>} arrays - array-like object containing ndarrays
-* @returns {integer} index
+* @param arrays - array-like object containing ndarrays
+* @returns index
 *
 * @example
 * var Float64Vector = require( '@stdlib/ndarray-vector-float64' );
@@ -61,41 +52,9 @@ var strided = require( '@stdlib/blas-ext-base-dfirst-index-equal' ).ndarray;
 * var idx = dfirstIndexEqual( [ x, y, fromIndex ] );
 * // returns 2
 */
-function dfirstIndexEqual( arrays ) {
-	var fromIndex;
-	var idx;
-	var sx;
-	var sy;
-	var ox;
-	var oy;
-	var N;
-	var x;
-	var y;
-
-	x = arrays[ 0 ];
-	y = arrays[ 1 ];
-	fromIndex = ndarraylike2scalar( arrays[ 2 ] );
-
-	N = numelDimension( x, 0 );
-	fromIndex = clipIndex( fromIndex, N );
-	if ( fromIndex >= N ) {
-		return -1;
-	}
-	N -= fromIndex;
-
-	sx = getStride( x, 0 );
-	ox = getOffset( x ) + ( sx*fromIndex );
-	sy = getStride( y, 0 );
-	oy = getOffset( y ) + ( sy*fromIndex );
-
-	idx = strided( N, getData( x ), sx, ox, getData( y ), sy, oy );
-	if ( idx >= 0 ) {
-		idx += fromIndex;
-	}
-	return idx;
-}
+declare function dfirstIndexEqual( arrays: [ float64ndarray, float64ndarray, typedndarray<number> ] ): number;
 
 
 // EXPORTS //
 
-module.exports = dfirstIndexEqual;
+export = dfirstIndexEqual;
